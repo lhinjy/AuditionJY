@@ -10,7 +10,14 @@ import {
     FaArrowAltCircleUp,
 } from "react-icons/fa";
 import "./typingGame.css";
-import { Card, Flex, createStandaloneToast, Button } from "@chakra-ui/react";
+import {
+    Card,
+    Flex,
+    createStandaloneToast,
+    Button,
+    Box,
+    Text,
+} from "@chakra-ui/react";
 const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
@@ -124,75 +131,94 @@ const TypingGame = () => {
 
     return (
         <div>
-            <Flex flexDir={"row"} justifyContent={"end"}>
+            <Flex
+                flexDirection={"column"}
+                width="100vw"
+                height="100vh"
+                bg="brand.background"
+            >
+                <div>
+                    <Flex>
+                        <Text
+                            fontSize="2xl"
+                            color={"brand.header"}
+                            padding={"10px"}
+                        >
+                            High Score: {highScore}
+                        </Text>
+                    </Flex>
+                    <Text fontSize="5xl" color={"brand.header"}>
+                        {totalScore}
+                    </Text>
+                </div>
                 <Flex
-                    alignItems={"center"}
-                    justifyItems={"flex-end"}
-                    style={{ fontSize: "30px" }}
+                    flexDirection={"column"}
+                    height="100%"
+                    justifyContent={"center"}
                 >
-                    High Score: {highScore}
+                    <div style={{ margin: "50px" }}>
+                        <div
+                            onKeyDown={(e) => {
+                                const key = e.key;
+                                if (key === "q") {
+                                    resetTyping();
+                                } else if (key === "Backspace") {
+                                    deleteTyping(false);
+                                } else if (key.length === 1) {
+                                    insertTyping(key);
+                                }
+                                e.preventDefault();
+                            }}
+                            tabIndex={0}
+                        >
+                            {chars.split("").map((char, index) => {
+                                let state = charsState[index];
+                                let color =
+                                    state === CharStateType.Incomplete
+                                        ? "brand.base"
+                                        : state === CharStateType.Correct
+                                        ? "brand.green"
+                                        : "brand.red";
+                                // if (currIndex >= length) {
+                                //     phase = PhaseType.Ended;
+                                // }
+                                // } else if (currIndex === length - 1) {
+                                //     if (errorChar > 1) {
+                                //         setScore(0);
+                                //         console.log(score);
+                                //     }
+                                // }
+                                return (
+                                    <>
+                                        <Flex
+                                            key={char + index}
+                                            color={color}
+                                            // style={{ color }}
+                                            flexDirection={"row"}
+                                            flexWrap={"nowrap"}
+                                            display={"inline-block"}
+                                            fontSize={"3vw"}
+                                        >
+                                            {char === "w" ? (
+                                                <FaArrowAltCircleUp />
+                                            ) : char === "a" ? (
+                                                <FaArrowAltCircleLeft />
+                                            ) : char === "s" ? (
+                                                <FaArrowAltCircleDown />
+                                            ) : char === "d" ? (
+                                                <FaArrowAltCircleRight />
+                                            ) : null}
+                                        </Flex>
+                                    </>
+                                );
+                            })}
+                        </div>
+                    </div>
+                    <Text fontSize="5xl" color={"brand.header"}>
+                        {counter}
+                    </Text>
                 </Flex>
             </Flex>
-            <Flex flexDir={"row"} justifyContent={"center"}>
-                <div style={{ fontSize: "50px" }}>{totalScore}</div>
-            </Flex>
-            <h1
-                onKeyDown={(e) => {
-                    const key = e.key;
-                    if (key === "q") {
-                        resetTyping();
-                    } else if (key === "Backspace") {
-                        deleteTyping(false);
-                    } else if (key.length === 1) {
-                        insertTyping(key);
-                    }
-
-                    e.preventDefault();
-                }}
-                tabIndex={0}
-            >
-                {chars.split("").map((char, index) => {
-                    let state = charsState[index];
-                    let color =
-                        state === CharStateType.Incomplete
-                            ? "black"
-                            : state === CharStateType.Correct
-                            ? "green"
-                            : "red";
-                    // if (currIndex >= length) {
-                    //     phase = PhaseType.Ended;
-                    // }
-                    // } else if (currIndex === length - 1) {
-                    //     if (errorChar > 1) {
-                    //         setScore(0);
-                    //         console.log(score);
-                    //     }
-                    // }
-                    return (
-                        <>
-                            <Flex
-                                key={char + index}
-                                style={{ color }}
-                                flexDirection={"row"}
-                                flexWrap={"nowrap"}
-                                display={"inline-block"}
-                                fontSize={"3vw"}
-                            >
-                                {char === "w" ? (
-                                    <FaArrowAltCircleUp />
-                                ) : char === "a" ? (
-                                    <FaArrowAltCircleLeft />
-                                ) : char === "s" ? (
-                                    <FaArrowAltCircleDown />
-                                ) : char === "d" ? (
-                                    <FaArrowAltCircleRight />
-                                ) : null}
-                            </Flex>
-                        </>
-                    );
-                })}
-            </h1>
-            {counter}
             {/* {phase === PhaseType.Started ? { counter } : null} */}
         </div>
     );
