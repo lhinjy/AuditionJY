@@ -22,12 +22,12 @@ const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
     const [typingString, setTypingString] = useState("wasd");
-    const [totalScore, setTotalScore] = useState(0);
+    const [score, setScore] = useState(0);
     const [highScore, setHighScore] = useState(
         sessionStorage.getItem("highScore")
     );
-    const [startGame, setStartGame] = useState(false);
-    const totalTiming = 10;
+    const [startTimer, setStartTimer] = useState(false);
+    const totalTiming = 2;
     const characterIncrease = 1;
     const [counter, setCounter] = useState(totalTiming);
     let {
@@ -41,23 +41,21 @@ const TypingGame = () => {
             phase,
             errorChar,
         },
-        actions: { insertTyping, resetTyping, deleteTyping },
+        actions: { insertTyping, resetTyping, deleteTyping, endTyping },
     } = useTypingGame(typingString);
 
     const getNextLevelString = () => {
         const availableCharacters = ["w", "a", "s", "d"];
         const nextLength = typingString.length + characterIncrease;
         let randomString = "";
-        console.log(nextLength);
         for (let i = 0; i < nextLength; i++) {
             const randomCharacter =
                 availableCharacters[
                     Math.floor(Math.random() * availableCharacters.length)
                 ];
             randomString = randomString + randomCharacter;
-            console.log(randomString);
-            setTypingString(randomString);
         }
+        setTypingString(randomString);
         return randomString;
     };
     // useEffect(() => {
@@ -85,58 +83,117 @@ const TypingGame = () => {
     //     console.log(value);
     // }, []);
 
+    const restartGame = () => {
+        setTypingString("wasd");
+        setScore(0);
+        setStartTimer(false);
+        setCounter(totalTiming);
+    };
+
     useEffect(() => {
-        if (phase === PhaseType.Started && !startGame) {
-            setStartGame(true);
+        if (phase === PhaseType.Started && !startTimer) {
+            setStartTimer(true);
         }
-        if (phase === PhaseType.Ended) {
-            if (errorChar === 0) {
-                setTotalScore((prev) => prev + 1);
-                getNextLevelString();
-                toast({
-                    title: "Success",
-                    description: "Moving to the next stage",
-                    status: "success",
-                    duration: 1000,
-                    isClosable: true,
-                });
-                phase = PhaseType.Started;
-            } else if (errorChar > 0) {
-                resetTyping();
-                toast({
-                    title: "Failed",
-                    description: "Click the arrows to retry",
-                    status: "error",
-                    duration: 1000,
-                    isClosable: true,
-                });
+        if (phase === PhaseType.Ended && counter !== 0) {
+            // proceed to next stage: counter is still running
+            if (currIndex === length - 1) {
+                if (errorChar === 0) {
+                    setScore((prev) => prev + 1);
+                    getNextLevelString();
+                    toast({
+                        title: "Success",
+                        description: "Moving to the next stage",
+                        status: "success",
+                        duration: 1000,
+                        isClosable: true,
+                    });
+                    phase = PhaseType.Started;
+                } else {
+                    resetTyping();
+                    toast({
+                        title: "Failed",
+                        description: "Click the arrows to retry",
+                        status: "error",
+                        duration: 1000,
+                        isClosable: true,
+                    });
+                }
             }
+
+            //counter is zero
+
+            // if (errorChar === 0 && currIndex === length - 1) {
+            //     // console.log(currIndex);
+            //     // console.log(length)
+            //     setScore((prev) => prev + 1);
+            //     getNextLevelString();
+            //     toast({
+            //         title: "Success",
+            //         description: "Moving to the next stage",
+            //         status: "success",
+            //         duration: 1000,
+            //         isClosable: true,
+            //     });
+            //     phase = PhaseType.Started;
+            // } else if (errorChar > 0) {
+            //     resetTyping();
+            //     toast({
+            //         title: "Failed",
+            //         description: "Click the arrows to retry",
+            //         status: "error",
+            //         duration: 1000,
+            //         isClosable: true,
+            //     });
+            // } else {
+            //     resetTyping();
+            //     toast({
+            //         title: "Failed",
+            //         description: "Time out",
+            //         status: "error",
+            //         duration: 1000,
+            //         isClosable: true,
+            //     });
+            // }
         }
+        // if (counter === 0) {
+        //     toast({
+        //         title: "Failed",
+        //         description: "Time out",
+        //         status: "error",
+        //         duration: 1000,
+        //         isClosable: true,
+        //     });
+        // }
     }, [phase]);
 
     useEffect(() => {
         if (counter === 0) {
-            if (totalScore > highScore) {
-                sessionStorage.setItem("highScore", totalScore);
+            if (score > highScore) {
+                sessionStorage.setItem("highScore", score);
                 setHighScore(sessionStorage.getItem("highScore"));
             }
+            if (currIndex < length - 1) {
+                toast({
+                    title: "Failed",
+                    description: "Time out",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+            }
+            // timer will go into negative without this return
             return;
         }
-        if (startGame) {
+        if (startTimer) {
             setTimeout(() => {
                 setCounter(counter - 1);
             }, 1000);
         }
-    }, [counter, startGame]);
+    }, [counter, startTimer]);
 
     return (
-        <div>
-            <Flex
-                flexDirection={"column"}
-                width="100vw"
-                height="100vh"
-                bg="brand.background"
-            >
+        <div bg="brand.background">
+            <Flex flexDirection={"column"} width="100vw" height="90vh">
                 <div>
                     <Flex>
                         <Text
@@ -148,7 +205,7 @@ const TypingGame = () => {
                         </Text>
                     </Flex>
                     <Text fontSize="5xl" color={"brand.header"}>
-                        {totalScore}
+                        {score}
                     </Text>
                 </div>
                 <Flex
@@ -193,7 +250,6 @@ const TypingGame = () => {
                                         <Flex
                                             key={char + index}
                                             color={color}
-                                            // style={{ color }}
                                             flexDirection={"row"}
                                             flexWrap={"nowrap"}
                                             display={"inline-block"}
@@ -219,6 +275,7 @@ const TypingGame = () => {
                     </Text>
                 </Flex>
             </Flex>
+            <Button onClick={restartGame}>Restart Game</Button>
             {/* {phase === PhaseType.Started ? { counter } : null} */}
         </div>
     );
