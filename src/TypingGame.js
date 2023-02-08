@@ -14,10 +14,10 @@ import { Card, Flex, createStandaloneToast } from "@chakra-ui/react";
 const { ToastContainer, toast } = createStandaloneToast();
 
 const TypingGame = () => {
-    // const typingString = "wasd";
     const [typingString, setTypingString] = useState("wasd");
     const [totalScore, setTotalScore] = useState(0);
     const totalTiming = 30;
+    const characterIncrease = 2;
     const [counter, setCounter] = useState(totalTiming);
     let {
         states: {
@@ -33,6 +33,23 @@ const TypingGame = () => {
         actions: { insertTyping, resetTyping, deleteTyping },
     } = useTypingGame(typingString);
 
+    const getRandomString = () => {
+        const availableCharacters = ["w", "a", "s", "d"];
+        const nextStringLength = typingString.length + characterIncrease;
+        let randomString = "";
+        console.log(nextStringLength);
+        for (let i = 0; i < nextStringLength; i++) {
+            const randomCharacter =
+                availableCharacters[
+                    Math.floor(Math.random() * availableCharacters.length)
+                ];
+            randomString = randomString + randomCharacter;
+            console.log(randomString);
+            setTypingString(randomString);
+        }
+        // console.log(typingString);
+        return randomString;
+    };
     // useEffect(() => {
     //     let dataValue = value["data"];
     //     typingString.split("").map((character) => {
@@ -62,7 +79,7 @@ const TypingGame = () => {
         if (phase === PhaseType.Ended) {
             if (errorChar === 0) {
                 setTotalScore((prev) => prev + 1);
-                setTypingString("wwwwasd");
+                setTypingString(getRandomString());
                 toast({
                     title: "Success",
                     description: "Moving to the next stage",
@@ -85,7 +102,6 @@ const TypingGame = () => {
     }, [phase]);
 
     useEffect(() => {
-        console.log(phase);
         if (counter === 0) {
             return;
         }
@@ -101,7 +117,7 @@ const TypingGame = () => {
             <h1
                 onKeyDown={(e) => {
                     const key = e.key;
-                    if (key === "Escape") {
+                    if (key === "q") {
                         resetTyping();
                     } else if (key === "Backspace") {
                         deleteTyping(false);
@@ -154,6 +170,7 @@ const TypingGame = () => {
                 })}
             </h1>
             {counter}
+            {/* {phase === PhaseType.Started ? { counter } : null} */}
         </div>
     );
 };
