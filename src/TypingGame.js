@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import useTypingGame, {
     CharStateType,
     PhaseType,
@@ -10,14 +10,8 @@ import {
     FaArrowAltCircleUp,
 } from "react-icons/fa";
 import "./typingGame.css";
-import {
-    Card,
-    Flex,
-    createStandaloneToast,
-    Button,
-    Box,
-    Text,
-} from "@chakra-ui/react";
+import { Flex, createStandaloneToast, Button, Text } from "@chakra-ui/react";
+import Instructions from "./Instructions";
 const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
@@ -192,18 +186,24 @@ const TypingGame = () => {
     }, [counter, startTimer]);
 
     return (
-        <div bg="brand.background">
-            <Flex flexDirection={"column"} width="100vw" height="90vh">
+        <div bg="brand.background" height="100%">
+            <Flex
+                flexDirection={"column"}
+                width="100vw"
+                height="80vh"
+                alignItems={"space-around"}
+            >
                 <div>
-                    <Flex>
-                        <Text
-                            fontSize="2xl"
-                            color={"brand.header"}
-                            padding={"10px"}
-                        >
+                    <Flex
+                        flexDirection={"column"}
+                        align={"start"}
+                        padding={"10px"}
+                    >
+                        <Text fontSize="2xl" color={"brand.header"}>
                             High Score: {highScore}
                         </Text>
                     </Flex>
+
                     <Text fontSize="5xl" color={"brand.header"}>
                         {score}
                     </Text>
@@ -211,9 +211,9 @@ const TypingGame = () => {
                 <Flex
                     flexDirection={"column"}
                     height="100%"
-                    justifyContent={"center"}
+                    justifyContent={"space-around"}
                 >
-                    <div style={{ margin: "50px" }}>
+                    <div style={{ marginTop: "250px" }}>
                         <div
                             onKeyDown={(e) => {
                                 const key = e.key;
@@ -275,7 +275,17 @@ const TypingGame = () => {
                     </Text>
                 </Flex>
             </Flex>
-            <Button onClick={restartGame}>Restart Game</Button>
+            <Flex
+                flexDirection={"row"}
+                width="50%"
+                justifyContent={"space-between"}
+            >
+                <Instructions />
+
+                <Flex alignSelf={"center"}>
+                    <Button onClick={restartGame}>Restart Game</Button>
+                </Flex>
+            </Flex>
             {/* {phase === PhaseType.Started ? { counter } : null} */}
         </div>
     );
