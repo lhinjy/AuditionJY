@@ -13,10 +13,12 @@ import {
     Th,
     Td,
     TableContainer,
+    Text,
 } from "@chakra-ui/react";
 const Instructions = () => {
     return (
         <div>
+            <Text>Click on the arrows to start game</Text>
             <TableContainer width="20vw">
                 <Table size="sm" variant={"striped"}>
                     <Thead>

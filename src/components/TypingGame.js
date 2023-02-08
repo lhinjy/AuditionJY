@@ -9,7 +9,6 @@ import {
     FaArrowAltCircleRight,
     FaArrowAltCircleUp,
 } from "react-icons/fa";
-import "./typingGame.css";
 import { Flex, createStandaloneToast, Button, Text } from "@chakra-ui/react";
 import Instructions from "./Instructions";
 const { toast } = createStandaloneToast();
@@ -21,21 +20,12 @@ const TypingGame = () => {
         sessionStorage.getItem("highScore")
     );
     const [startTimer, setStartTimer] = useState(false);
-    const totalTiming = 2;
+    const totalTiming = 10;
     const characterIncrease = 1;
     const [counter, setCounter] = useState(totalTiming);
     let {
-        states: {
-            chars,
-            charsState,
-            length,
-            currIndex,
-            currChar,
-            correctChar,
-            phase,
-            errorChar,
-        },
-        actions: { insertTyping, resetTyping, deleteTyping, endTyping },
+        states: { chars, charsState, length, currIndex, phase, errorChar },
+        actions: { insertTyping, resetTyping, deleteTyping },
     } = useTypingGame(typingString);
 
     const getNextLevelString = () => {
@@ -113,41 +103,6 @@ const TypingGame = () => {
                     });
                 }
             }
-
-            //counter is zero
-
-            // if (errorChar === 0 && currIndex === length - 1) {
-            //     // console.log(currIndex);
-            //     // console.log(length)
-            //     setScore((prev) => prev + 1);
-            //     getNextLevelString();
-            //     toast({
-            //         title: "Success",
-            //         description: "Moving to the next stage",
-            //         status: "success",
-            //         duration: 1000,
-            //         isClosable: true,
-            //     });
-            //     phase = PhaseType.Started;
-            // } else if (errorChar > 0) {
-            //     resetTyping();
-            //     toast({
-            //         title: "Failed",
-            //         description: "Click the arrows to retry",
-            //         status: "error",
-            //         duration: 1000,
-            //         isClosable: true,
-            //     });
-            // } else {
-            //     resetTyping();
-            //     toast({
-            //         title: "Failed",
-            //         description: "Time out",
-            //         status: "error",
-            //         duration: 1000,
-            //         isClosable: true,
-            //     });
-            // }
         }
         // if (counter === 0) {
         //     toast({
@@ -190,7 +145,7 @@ const TypingGame = () => {
             <Flex
                 flexDirection={"column"}
                 width="100vw"
-                height="80vh"
+                height="75vh"
                 alignItems={"space-around"}
             >
                 <div>

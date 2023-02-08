@@ -1,5 +1,5 @@
 import "./App.css";
-import TypingGame from "./TypingGame";
+import TypingGame from "./components/TypingGame";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./theme";
 function App() {
