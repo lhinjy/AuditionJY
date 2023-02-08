@@ -10,7 +10,7 @@ import {
     FaArrowAltCircleUp,
 } from "react-icons/fa";
 import "./typingGame.css";
-import { Card, Flex, createStandaloneToast } from "@chakra-ui/react";
+import { Card, Flex, createStandaloneToast, Button } from "@chakra-ui/react";
 const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
@@ -19,6 +19,7 @@ const TypingGame = () => {
     const [highScore, setHighScore] = useState(
         sessionStorage.getItem("highScore")
     );
+    const [startGame, setStartGame] = useState(false);
     const totalTiming = 10;
     const characterIncrease = 1;
     const [counter, setCounter] = useState(totalTiming);
@@ -78,11 +79,13 @@ const TypingGame = () => {
     // }, []);
 
     useEffect(() => {
+        if (phase === PhaseType.Started && !startGame) {
+            setStartGame(true);
+        }
         if (phase === PhaseType.Ended) {
             if (errorChar === 0) {
                 setTotalScore((prev) => prev + 1);
                 getNextLevelString();
-                // setTypingString(getNextLevelString());
                 toast({
                     title: "Success",
                     description: "Moving to the next stage",
@@ -112,12 +115,13 @@ const TypingGame = () => {
             }
             return;
         }
-        if (phase === PhaseType.Started) {
+        if (startGame) {
             setTimeout(() => {
                 setCounter(counter - 1);
             }, 1000);
         }
-    }, [phase, counter]);
+    }, [counter, startGame]);
+
     return (
         <div>
             <Flex flexDir={"row"} justifyContent={"end"}>
