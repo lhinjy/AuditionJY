@@ -1,10 +1,13 @@
 import "./App.css";
 import TypingGame from "./TypingGame";
+import { ChakraProvider } from "@chakra-ui/react";
 function App() {
     return (
-        <div className="App">
-            <TypingGame />
-        </div>
+        <ChakraProvider>
+            <div className="App">
+                <TypingGame />
+            </div>
+        </ChakraProvider>
     );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import useTypingGame, {
     CharStateType,
     PhaseType,
@@ -9,12 +9,12 @@ import {
     FaArrowAltCircleRight,
     FaArrowAltCircleUp,
 } from "react-icons/fa";
-// import { Box, Container } from "@chakra-ui/react";
 import "./typingGame.css";
+import { Card, Flex, createStandaloneToast } from "@chakra-ui/react";
+const { ToastContainer, toast } = createStandaloneToast();
 
 const TypingGame = () => {
     const typingString = "wasd";
-    const [score, setScore] = useState(0);
     const [totalScore, setTotalScore] = useState(0);
     // const [value, setValue] = useState({ data: [] });
     // const [index, setIndex] = useState(0);
@@ -56,11 +56,23 @@ const TypingGame = () => {
     //     setValue({ data: dataValue });
     //     console.log(value);
     // }, []);
-
+    const updateString = useCallback(() => {
+        console.log("df");
+    }, [totalScore, phase]);
     useEffect(() => {
+        // console.log(phase);
         if (currIndex === length - 1) {
             if (errorChar === 0) {
                 setTotalScore((prev) => prev + 1);
+            } else if (errorChar > 0) {
+                resetTyping();
+                toast({
+                    title: "Failed",
+                    description: "Click the arrows to retry",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
             }
         }
     }, [phase]);
@@ -89,9 +101,9 @@ const TypingGame = () => {
                             : state === CharStateType.Correct
                             ? "green"
                             : "red";
-                    if (currIndex >= length) {
-                        phase = PhaseType.Ended;
-                    }
+                    // if (currIndex >= length) {
+                    //     phase = PhaseType.Ended;
+                    // }
                     // } else if (currIndex === length - 1) {
                     //     if (errorChar > 1) {
                     //         setScore(0);
@@ -100,10 +112,13 @@ const TypingGame = () => {
                     // }
                     return (
                         <>
-                            <div
+                            <Flex
                                 key={char + index}
                                 style={{ color }}
-                                className="row flex"
+                                flexDirection={"row"}
+                                flexWrap={"nowrap"}
+                                display={"inline-block"}
+                                fontSize={"3vw"}
                             >
                                 {char === "w" ? (
                                     <FaArrowAltCircleUp />
@@ -114,11 +129,11 @@ const TypingGame = () => {
                                 ) : char === "d" ? (
                                     <FaArrowAltCircleRight />
                                 ) : null}
-                            </div>
+                            </Flex>
                         </>
                     );
                 })}
-                {/* {value["data"].map((x) => x)} */}
+                {updateString}
             </h1>
         </div>
     );
