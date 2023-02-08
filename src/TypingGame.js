@@ -14,11 +14,12 @@ import { Card, Flex, createStandaloneToast } from "@chakra-ui/react";
 const { ToastContainer, toast } = createStandaloneToast();
 
 const TypingGame = () => {
-    const typingString = "wasd";
+    // const typingString = "wasd";
+    const [typingString, setTypingString] = useState("wasd");
     const [totalScore, setTotalScore] = useState(0);
-    // const [value, setValue] = useState({ data: [] });
-    // const [index, setIndex] = useState(0);
-    const {
+    const totalTiming = 30;
+    const [counter, setCounter] = useState(totalTiming);
+    let {
         states: {
             chars,
             charsState,
@@ -56,26 +57,44 @@ const TypingGame = () => {
     //     setValue({ data: dataValue });
     //     console.log(value);
     // }, []);
-    const updateString = useCallback(() => {
-        console.log("df");
-    }, [totalScore, phase]);
+
     useEffect(() => {
-        // console.log(phase);
-        if (currIndex === length - 1) {
+        if (phase === PhaseType.Ended) {
             if (errorChar === 0) {
                 setTotalScore((prev) => prev + 1);
+                setTypingString("wwwwasd");
+                toast({
+                    title: "Success",
+                    description: "Moving to the next stage",
+                    status: "success",
+                    duration: 1000,
+                    isClosable: true,
+                });
+                phase = PhaseType.Started;
             } else if (errorChar > 0) {
                 resetTyping();
                 toast({
                     title: "Failed",
                     description: "Click the arrows to retry",
                     status: "error",
-                    duration: 5000,
+                    duration: 1000,
                     isClosable: true,
                 });
             }
         }
     }, [phase]);
+
+    useEffect(() => {
+        console.log(phase);
+        if (counter === 0) {
+            return;
+        }
+        if (phase === PhaseType.Started) {
+            setTimeout(() => {
+                setCounter(counter - 1);
+            }, 1000);
+        }
+    }, [phase, counter]);
     return (
         <div>
             <div style={{ fontSize: "50px" }}>{totalScore}</div>
@@ -133,8 +152,8 @@ const TypingGame = () => {
                         </>
                     );
                 })}
-                {updateString}
             </h1>
+            {counter}
         </div>
     );
 };
