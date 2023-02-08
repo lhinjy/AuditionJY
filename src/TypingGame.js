@@ -11,13 +11,16 @@ import {
 } from "react-icons/fa";
 import "./typingGame.css";
 import { Card, Flex, createStandaloneToast } from "@chakra-ui/react";
-const { ToastContainer, toast } = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
     const [typingString, setTypingString] = useState("wasd");
     const [totalScore, setTotalScore] = useState(0);
-    const totalTiming = 30;
-    const characterIncrease = 2;
+    const [highScore, setHighScore] = useState(
+        sessionStorage.getItem("highScore")
+    );
+    const totalTiming = 10;
+    const characterIncrease = 1;
     const [counter, setCounter] = useState(totalTiming);
     let {
         states: {
@@ -33,12 +36,12 @@ const TypingGame = () => {
         actions: { insertTyping, resetTyping, deleteTyping },
     } = useTypingGame(typingString);
 
-    const getRandomString = () => {
+    const getNextLevelString = () => {
         const availableCharacters = ["w", "a", "s", "d"];
-        const nextStringLength = typingString.length + characterIncrease;
+        const nextLength = typingString.length + characterIncrease;
         let randomString = "";
-        console.log(nextStringLength);
-        for (let i = 0; i < nextStringLength; i++) {
+        console.log(nextLength);
+        for (let i = 0; i < nextLength; i++) {
             const randomCharacter =
                 availableCharacters[
                     Math.floor(Math.random() * availableCharacters.length)
@@ -47,7 +50,6 @@ const TypingGame = () => {
             console.log(randomString);
             setTypingString(randomString);
         }
-        // console.log(typingString);
         return randomString;
     };
     // useEffect(() => {
@@ -79,7 +81,8 @@ const TypingGame = () => {
         if (phase === PhaseType.Ended) {
             if (errorChar === 0) {
                 setTotalScore((prev) => prev + 1);
-                setTypingString(getRandomString());
+                getNextLevelString();
+                // setTypingString(getNextLevelString());
                 toast({
                     title: "Success",
                     description: "Moving to the next stage",
@@ -103,6 +106,10 @@ const TypingGame = () => {
 
     useEffect(() => {
         if (counter === 0) {
+            if (totalScore > highScore) {
+                sessionStorage.setItem("highScore", totalScore);
+                setHighScore(sessionStorage.getItem("highScore"));
+            }
             return;
         }
         if (phase === PhaseType.Started) {
@@ -113,7 +120,18 @@ const TypingGame = () => {
     }, [phase, counter]);
     return (
         <div>
-            <div style={{ fontSize: "50px" }}>{totalScore}</div>
+            <Flex flexDir={"row"} justifyContent={"end"}>
+                <Flex
+                    alignItems={"center"}
+                    justifyItems={"flex-end"}
+                    style={{ fontSize: "30px" }}
+                >
+                    High Score: {highScore}
+                </Flex>
+            </Flex>
+            <Flex flexDir={"row"} justifyContent={"center"}>
+                <div style={{ fontSize: "50px" }}>{totalScore}</div>
+            </Flex>
             <h1
                 onKeyDown={(e) => {
                     const key = e.key;
@@ -124,6 +142,7 @@ const TypingGame = () => {
                     } else if (key.length === 1) {
                         insertTyping(key);
                     }
+
                     e.preventDefault();
                 }}
                 tabIndex={0}
