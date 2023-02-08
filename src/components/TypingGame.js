@@ -95,7 +95,7 @@ const TypingGame = () => {
                 } else {
                     resetTyping();
                     toast({
-                        title: "Failed",
+                        title: "End",
                         description: "Click the arrows to retry",
                         status: "error",
                         duration: 1000,
@@ -209,6 +209,7 @@ const TypingGame = () => {
                                             flexWrap={"nowrap"}
                                             display={"inline-block"}
                                             fontSize={"3vw"}
+                                            margin={"5px"}
                                         >
                                             {char === "w" ? (
                                                 <FaArrowAltCircleUp />

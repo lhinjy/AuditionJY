@@ -18,7 +18,7 @@ import {
 const Instructions = () => {
     return (
         <div>
-            <Text>Click on the arrows to start game</Text>
+            <Text>Click on the arrows and start wasd-ing away!</Text>
             <TableContainer width="20vw">
                 <Table size="sm" variant={"striped"}>
                     <Thead>
