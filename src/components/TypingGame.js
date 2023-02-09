@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { Flex, createStandaloneToast, Button, Text } from "@chakra-ui/react";
 import Instructions from "./Instructions";
+
 const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
@@ -83,6 +84,7 @@ const TypingGame = () => {
             if (currIndex === length - 1) {
                 if (errorChar === 0) {
                     setScore((prev) => prev + 1);
+
                     getNextLevelString();
                     toast({
                         title: "Success",
@@ -91,7 +93,6 @@ const TypingGame = () => {
                         duration: 1000,
                         isClosable: true,
                     });
-                    phase = PhaseType.Started;
                 } else {
                     resetTyping();
                     toast({
@@ -104,15 +105,7 @@ const TypingGame = () => {
                 }
             }
         }
-        // if (counter === 0) {
-        //     toast({
-        //         title: "Failed",
-        //         description: "Time out",
-        //         status: "error",
-        //         duration: 1000,
-        //         isClosable: true,
-        //     });
-        // }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [phase]);
 
     useEffect(() => {
@@ -138,7 +131,7 @@ const TypingGame = () => {
                 setCounter(counter - 1);
             }, 1000);
         }
-    }, [counter, startTimer]);
+    }, [counter, currIndex, highScore, length, score, startTimer]);
 
     return (
         <div bg="brand.background" height="100%">
