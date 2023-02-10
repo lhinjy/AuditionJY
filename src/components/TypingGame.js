@@ -85,7 +85,6 @@ const TypingGame = () => {
             if (currIndex === length - 1) {
                 if (errorChar === 0) {
                     setScore((prev) => prev + 1);
-
                     getNextLevelString();
                     toast({
                         title: "Success",
@@ -143,7 +142,7 @@ const TypingGame = () => {
             alignItems={"space-around"}
         >
             <Flex flexDirection={"row"} width="100vw" justifyContent={"center"}>
-                <Flex backgroundColor={"teal.100"} width={"33.3vw"}>
+                <Flex width={"33.3vw"}>
                     <Text
                         fontSize="2xl"
                         color={"brand.header"}
@@ -152,19 +151,13 @@ const TypingGame = () => {
                         High Score: {highScore}
                     </Text>
                 </Flex>
-                <Flex
-                    backgroundColor={"red.100"}
-                    width={"33.3vw"}
-                    justifyContent={"center"}
-                >
+                <Flex width={"33.3vw"} justifyContent={"center"}>
                     <Text fontSize="5xl" color={"brand.header"} data-cy="score">
                         {score}
                     </Text>
                 </Flex>
                 <Flex width={"33.3vw"} justifyContent={"flex-end"}>
-                    <div backgroundColor={"blue.100"}>
-                        <LeaderBoard />
-                    </div>
+                    <LeaderBoard />
                 </Flex>
             </Flex>
             <Flex justifyContent={"space-around"} width={"100vw"}>
