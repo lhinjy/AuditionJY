@@ -15,14 +15,14 @@ import Instructions from "./Instructions";
 const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
-    const [typingString, setTypingString] = useState("wasd");
+    const totalTiming = 10;
+    const characterIncrease = 1;
     const [score, setScore] = useState(0);
+    const [typingString, setTypingString] = useState("wasd");
     const [highScore, setHighScore] = useState(
         sessionStorage.getItem("highScore")
     );
     const [startTimer, setStartTimer] = useState(false);
-    const totalTiming = 10;
-    const characterIncrease = 1;
     const [counter, setCounter] = useState(totalTiming);
     let {
         states: { chars, charsState, length, currIndex, phase, errorChar },
@@ -147,12 +147,16 @@ const TypingGame = () => {
                         align={"start"}
                         padding={"10px"}
                     >
-                        <Text fontSize="2xl" color={"brand.header"}>
+                        <Text
+                            fontSize="2xl"
+                            color={"brand.header"}
+                            data-cy="highScore"
+                        >
                             High Score: {highScore}
                         </Text>
                     </Flex>
 
-                    <Text fontSize="5xl" color={"brand.header"}>
+                    <Text fontSize="5xl" color={"brand.header"} data-cy="score">
                         {score}
                     </Text>
                 </div>
@@ -175,6 +179,7 @@ const TypingGame = () => {
                                 e.preventDefault();
                             }}
                             tabIndex={0}
+                            data-cy="character"
                         >
                             {chars.split("").map((char, index) => {
                                 let state = charsState[index];
@@ -220,7 +225,7 @@ const TypingGame = () => {
                         </div>
                     </div>
                     <Text fontSize="5xl" color={"brand.header"}>
-                        {counter}
+                        <span data-cy="counter">{counter}</span>
                     </Text>
                 </Flex>
             </Flex>
@@ -232,7 +237,9 @@ const TypingGame = () => {
                 <Instructions />
 
                 <Flex alignSelf={"center"}>
-                    <Button onClick={restartGame}>Restart Game</Button>
+                    <Button onClick={restartGame} data-cy="reset">
+                        Restart Game
+                    </Button>
                 </Flex>
             </Flex>
             {/* {phase === PhaseType.Started ? { counter } : null} */}

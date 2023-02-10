@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "cypress": "^12.5.1",
     "framer-motion": "^9.0.1",
     "prettier": "^2.8.3",
     "react": "^18.2.0",
@@ -28,6 +29,9 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "eslintIgnore":[
+      "./src/components/*.cy.js"
     ]
   },
   "browserslist": {
