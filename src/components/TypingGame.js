@@ -9,8 +9,16 @@ import {
     FaArrowAltCircleRight,
     FaArrowAltCircleUp,
 } from "react-icons/fa";
-import { Flex, createStandaloneToast, Button, Text } from "@chakra-ui/react";
+import {
+    Flex,
+    createStandaloneToast,
+    Button,
+    Text,
+    Box,
+    Container,
+} from "@chakra-ui/react";
 import Instructions from "./Instructions";
+import LeaderBoard from "./Leaderboard";
 
 const { toast } = createStandaloneToast();
 
@@ -134,116 +142,119 @@ const TypingGame = () => {
     }, [counter, currIndex, highScore, length, score, startTimer]);
 
     return (
-        <div bg="brand.background" height="100%">
-            <Flex
-                flexDirection={"column"}
-                width="100vw"
-                height="75vh"
-                alignItems={"space-around"}
-            >
-                <div>
-                    <Flex
-                        flexDirection={"column"}
-                        align={"start"}
-                        padding={"10px"}
+        <Flex
+            bg="brand.background"
+            height="100vh"
+            flexDirection="column"
+            justifyContent="space-between"
+            alignItems={"space-around"}
+        >
+            <Flex flexDirection={"row"} width="100vw" justifyContent={"center"}>
+                <Flex backgroundColor={"teal.100"} width={"33.3vw"}>
+                    <Text
+                        fontSize="2xl"
+                        color={"brand.header"}
+                        data-cy="highScore"
                     >
-                        <Text
-                            fontSize="2xl"
-                            color={"brand.header"}
-                            data-cy="highScore"
-                        >
-                            High Score: {highScore}
-                        </Text>
-                    </Flex>
-
+                        High Score: {highScore}
+                    </Text>
+                </Flex>
+                <Flex
+                    backgroundColor={"red.100"}
+                    width={"33.3vw"}
+                    justifyContent={"center"}
+                >
                     <Text fontSize="5xl" color={"brand.header"} data-cy="score">
                         {score}
                     </Text>
-                </div>
-                <Flex
-                    flexDirection={"column"}
-                    height="100%"
-                    justifyContent={"space-around"}
-                >
-                    <div style={{ marginTop: "250px" }}>
-                        <div
-                            onKeyDown={(e) => {
-                                const key = e.key;
-                                if (key === "q") {
-                                    resetTyping();
-                                } else if (key === "Backspace") {
-                                    deleteTyping(false);
-                                } else if (key.length === 1) {
-                                    insertTyping(key);
-                                }
-                                e.preventDefault();
-                            }}
-                            tabIndex={0}
-                            data-cy="character"
-                        >
-                            {chars.split("").map((char, index) => {
-                                let state = charsState[index];
-                                let color =
-                                    state === CharStateType.Incomplete
-                                        ? "brand.base"
-                                        : state === CharStateType.Correct
-                                        ? "brand.green"
-                                        : "brand.red";
-                                // if (currIndex >= length) {
-                                //     phase = PhaseType.Ended;
-                                // }
-                                // } else if (currIndex === length - 1) {
-                                //     if (errorChar > 1) {
-                                //         setScore(0);
-                                //         console.log(score);
-                                //     }
-                                // }
-                                return (
-                                    <>
-                                        <Flex
-                                            key={char + index}
-                                            color={color}
-                                            flexDirection={"row"}
-                                            flexWrap={"nowrap"}
-                                            display={"inline-block"}
-                                            fontSize={"3vw"}
-                                            margin={"5px"}
-                                        >
-                                            {char === "w" ? (
-                                                <FaArrowAltCircleUp />
-                                            ) : char === "a" ? (
-                                                <FaArrowAltCircleLeft />
-                                            ) : char === "s" ? (
-                                                <FaArrowAltCircleDown />
-                                            ) : char === "d" ? (
-                                                <FaArrowAltCircleRight />
-                                            ) : null}
-                                        </Flex>
-                                    </>
-                                );
-                            })}
-                        </div>
-                    </div>
-                    <Text fontSize="5xl" color={"brand.header"}>
-                        <span data-cy="counter">{counter}</span>
-                    </Text>
                 </Flex>
+                <Flex width={"33.3vw"} justifyContent={"flex-end"}>
+                    <div backgroundColor={"blue.100"}>
+                        <LeaderBoard />
+                    </div>
+                </Flex>
+            </Flex>
+            <Flex justifyContent={"space-around"} width={"100vw"}>
+                <div
+                    onKeyDown={(e) => {
+                        const key = e.key;
+                        if (key === "q") {
+                            resetTyping();
+                        } else if (key === "Backspace") {
+                            deleteTyping(false);
+                        } else if (key.length === 1) {
+                            insertTyping(key);
+                        }
+                        e.preventDefault();
+                    }}
+                    tabIndex={0}
+                    data-cy="character"
+                >
+                    {chars.split("").map((char, index) => {
+                        let state = charsState[index];
+                        let color =
+                            state === CharStateType.Incomplete
+                                ? "brand.base"
+                                : state === CharStateType.Correct
+                                ? "brand.green"
+                                : "brand.red";
+                        // if (currIndex >= length) {
+                        //     phase = PhaseType.Ended;
+                        // }
+                        // } else if (currIndex === length - 1) {
+                        //     if (errorChar > 1) {
+                        //         setScore(0);
+                        //         console.log(score);
+                        //     }
+                        // }
+                        return (
+                            <Flex
+                                key={char + index}
+                                color={color}
+                                flexWrap={"nowrap"}
+                                display={"inline-block"}
+                                fontSize={"100px"}
+                                margin={"5px"}
+                            >
+                                {char === "w" ? (
+                                    <FaArrowAltCircleUp />
+                                ) : char === "a" ? (
+                                    <FaArrowAltCircleLeft />
+                                ) : char === "s" ? (
+                                    <FaArrowAltCircleDown />
+                                ) : char === "d" ? (
+                                    <FaArrowAltCircleRight />
+                                ) : null}
+                            </Flex>
+                        );
+                    })}
+                </div>
+                {/* <Text fontSize="5xl" color={"brand.header"}>
+                    <span data-cy="counter">{counter}</span>
+                </Text> */}
             </Flex>
             <Flex
                 flexDirection={"row"}
-                width="50%"
+                width="100%"
                 justifyContent={"space-between"}
             >
                 <Instructions />
-
-                <Flex alignSelf={"center"}>
+                <Flex
+                    alignSelf={"center"}
+                    flexDirection={"column"}
+                    width="50vw"
+                    alignItems={"start"}
+                >
+                    <Text fontSize="5xl" color={"brand.header"}>
+                        <span data-cy="counter">{counter}</span>
+                    </Text>
                     <Button onClick={restartGame} data-cy="reset">
                         Restart Game
                     </Button>
                 </Flex>
             </Flex>
             {/* {phase === PhaseType.Started ? { counter } : null} */}
-        </div>
+        </Flex>
     );
 };
 
