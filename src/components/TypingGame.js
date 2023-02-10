@@ -9,14 +9,7 @@ import {
     FaArrowAltCircleRight,
     FaArrowAltCircleUp,
 } from "react-icons/fa";
-import {
-    Flex,
-    createStandaloneToast,
-    Button,
-    Text,
-    Box,
-    Container,
-} from "@chakra-ui/react";
+import { Flex, createStandaloneToast, Button, Text } from "@chakra-ui/react";
 import Instructions from "./Instructions";
 import LeaderBoard from "./Leaderboard";
 

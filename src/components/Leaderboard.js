@@ -1,64 +1,41 @@
-import React from "react";
-import {
-    FaArrowAltCircleDown,
-    FaArrowAltCircleLeft,
-    FaArrowAltCircleRight,
-    FaArrowAltCircleUp,
-} from "react-icons/fa";
-import {
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-    TableContainer,
-    Text,
-} from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Text, Input } from "@chakra-ui/react";
+import { supabase } from "../api/client";
+
 const LeaderBoard = () => {
+    const [scores, setScores] = useState([]);
+    const [score, setScore] = useState({ highScore: "", name: "" });
+    const { highScore, name } = score;
+
+    useEffect(() => {
+        console.log("df");
+        fetchPosts();
+    }, []);
+    async function fetchPosts() {
+        const { data } = await supabase.from("scores").select();
+        setScores(data);
+    }
+    async function createPost() {
+        console.log(score);
+        await supabase
+            .from("scores")
+            .insert([{ highScore: highScore, name: name }])
+            .single();
+        fetchPosts();
+    }
+    const onChange = () => {
+        setScore({ ...score, highScore: "5" });
+        createPost();
+    };
     return (
         <div>
-            <Text>Click on the arrows and start wasd-ing away!</Text>
-            <TableContainer width="20vw">
-                <Table size="sm" variant={"striped"}>
-                    <Thead>
-                        <Tr>
-                            <Th>Key</Th>
-                            <Th>Meaning</Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        <Tr>
-                            <Td>w</Td>
-                            <Td>
-                                <FaArrowAltCircleUp />
-                            </Td>
-                        </Tr>
-                        <Tr>
-                            <Td>a</Td>
-                            <Td>
-                                <FaArrowAltCircleLeft />
-                            </Td>
-                        </Tr>
-                        <Tr>
-                            <Td>s</Td>
-                            <Td>
-                                <FaArrowAltCircleDown />
-                            </Td>
-                        </Tr>
-                        <Tr>
-                            <Td>d</Td>
-                            <Td>
-                                <FaArrowAltCircleRight />
-                            </Td>
-                        </Tr>
-                        <Tr>
-                            <Td>q</Td>
-                            <Td>Reset stage</Td>
-                        </Tr>
-                    </Tbody>
-                </Table>
-            </TableContainer>
+            <Text>Leaderboard</Text>
+            <Input
+                placeholder="name"
+                size="lg"
+                value={name}
+                onChange={onChange}
+            />
         </div>
     );
 };
