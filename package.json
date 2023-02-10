@@ -30,9 +30,6 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ],
-    "eslintIgnore": [
-      "./src/components/*.cy.js"
     ]
   },
   "browserslist": {
