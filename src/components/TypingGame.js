@@ -23,6 +23,7 @@ const TypingGame = () => {
     const [highScore, setHighScore] = useState(
         sessionStorage.getItem("highScore")
     );
+    const [leaderboardUpdate, setLeaderboardUpdate] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [counter, setCounter] = useState(totalTiming);
     let {
@@ -113,6 +114,7 @@ const TypingGame = () => {
             if (score > highScore) {
                 sessionStorage.setItem("highScore", score);
                 setHighScore(sessionStorage.getItem("highScore"));
+                setLeaderboardUpdate(true);
             }
             if (currIndex < length - 1) {
                 toast({
@@ -157,7 +159,10 @@ const TypingGame = () => {
                     </Text>
                 </Flex>
                 <Flex width={"33.3vw"} justifyContent={"flex-end"}>
-                    <LeaderBoard />
+                    <LeaderBoard highScore={highScore} />
+                    {/* {leaderboardUpdate ? (
+                        <LeaderBoard update={leaderboardUpdate} />
+                    ) : null} */}
                 </Flex>
             </Flex>
             <Flex justifyContent={"space-around"} width={"100vw"}>
