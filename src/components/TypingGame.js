@@ -159,10 +159,10 @@ const TypingGame = () => {
                     </Text>
                 </Flex>
                 <Flex width={"33.3vw"} justifyContent={"flex-end"}>
-                    <LeaderBoard highScore={highScore} />
-                    {/* {leaderboardUpdate ? (
-                        <LeaderBoard update={leaderboardUpdate} />
-                    ) : null} */}
+                    <LeaderBoard
+                        highScore={highScore}
+                        leaderboardUpdate={leaderboardUpdate}
+                    />
                 </Flex>
             </Flex>
             <Flex justifyContent={"space-around"} width={"100vw"}>

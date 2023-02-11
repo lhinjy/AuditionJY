@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     Text,
     Input,
@@ -10,6 +10,23 @@ import {
     Th,
     Td,
     TableContainer,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
+    PopoverFooter,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverAnchor,
 } from "@chakra-ui/react";
 import { supabase } from "../api/client";
 
@@ -17,6 +34,7 @@ const LeaderBoard = (props) => {
     const [scores, setScores] = useState([]);
     // const [score, setScore] = useState(0);
     const [name, setName] = useState("");
+    const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
     useEffect(() => {
         fetchPosts();
     }, []);
@@ -32,46 +50,67 @@ const LeaderBoard = (props) => {
     }
 
     async function createPost() {
-        console.log(props.highScore);
-        const { data } = await supabase
+        await supabase
             .from("scores")
             .insert({ highScore: props.highScore, name: name });
         fetchPosts();
+        setName("");
     }
+
+    const updateLeaderboard = useCallback(() => {
+        return scores.map((score) => {
+            return (
+                <Tr>
+                    <Td>{score.highScore}</Td>
+                    <Td>{score.name} </Td>
+                </Tr>
+            );
+        });
+    }, [scores]);
+
     const onChange = (event) => {
         event.preventDefault();
         setName(event.target.value);
     };
+    const inputHighScore = () => {
+        return (
+            <div>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader>Modal Title</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <Input
+                                placeholder="name"
+                                size="lg"
+                                value={name}
+                                onChange={onChange}
+                            />
+                            <div onClick={onClose}>
+                                <Button onClick={createPost}>Go!</Button>
+                            </div>
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            </div>
+        );
+    };
+
     return (
         <div>
             <Text>Leaderboard</Text>
-            <Input
-                placeholder="name"
-                size="lg"
-                value={name}
-                onChange={onChange}
-            />
-            <Button onClick={createPost}>sad</Button>
+            {props.leaderboardUpdate ? inputHighScore() : null}
             <TableContainer width="20vw">
                 <Table size="sm" variant={"striped"}>
                     <Thead>
                         <Tr>
                             <Th>HighScore</Th>
-
                             <Th>Name</Th>
                         </Tr>
+                        {updateLeaderboard()}
                     </Thead>
-                    <Tbody>
-                        {scores.map((score) => {
-                            console.log(score);
-                            return (
-                                <Tr>
-                                    <Td>{score.highScore}</Td>
-                                    <Td>{score.name} </Td>
-                                </Tr>
-                            );
-                        })}
-                    </Tbody>
+                    <Tbody></Tbody>
                 </Table>
             </TableContainer>
         </div>
