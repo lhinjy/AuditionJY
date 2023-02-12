@@ -14,27 +14,17 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverHeader,
-    PopoverBody,
-    PopoverFooter,
-    PopoverArrow,
-    PopoverCloseButton,
-    PopoverAnchor,
 } from "@chakra-ui/react";
 import { supabase } from "../api/client";
 
 const LeaderBoard = (props) => {
     const [scores, setScores] = useState([]);
-    // const [score, setScore] = useState(0);
     const [name, setName] = useState("");
-    const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+    const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+    const getTopLeaderboardScores = 3;
     useEffect(() => {
         fetchPosts();
     }, []);
@@ -43,7 +33,7 @@ const LeaderBoard = (props) => {
         const { data } = await supabase
             .from("scores")
             .select()
-            .limit(3)
+            .limit(getTopLeaderboardScores)
             .order("highScore", { ascending: false });
         setScores(data);
         console.log(data);
@@ -73,28 +63,36 @@ const LeaderBoard = (props) => {
         setName(event.target.value);
     };
     const inputHighScore = () => {
-        return (
-            <div>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>Modal Title</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <Input
-                                placeholder="name"
-                                size="lg"
-                                value={name}
-                                onChange={onChange}
-                            />
-                            <div onClick={onClose}>
-                                <Button onClick={createPost}>Go!</Button>
-                            </div>
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
-            </div>
-        );
+        // just index things
+        const lowestLeaderboardHighscore =
+            scores[getTopLeaderboardScores - 1].highScore;
+
+        if (props.highScore > lowestLeaderboardHighscore) {
+            return (
+                <div>
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>Enter your name</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <Input
+                                    placeholder="name"
+                                    size="lg"
+                                    value={name}
+                                    onChange={onChange}
+                                />
+                                <div onClick={onClose}>
+                                    <Button onClick={createPost}>
+                                        To the leaderboard!
+                                    </Button>
+                                </div>
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal>
+                </div>
+            );
+        }
     };
 
     return (
