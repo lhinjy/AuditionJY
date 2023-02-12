@@ -26,6 +26,8 @@ const TypingGame = () => {
     const [leaderboardUpdate, setLeaderboardUpdate] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [counter, setCounter] = useState(totalTiming);
+    const gameOverId = "gameOverId";
+
     let {
         states: { chars, charsState, length, currIndex, phase, errorChar },
         actions: { insertTyping, resetTyping, deleteTyping },
@@ -77,12 +79,15 @@ const TypingGame = () => {
         setCounter(totalTiming);
     };
 
+    // possible scenarios when stage ends
     useEffect(() => {
+        // Because PhaseType.started is only after clicking on the arrows
+        // Boolean is required to let the timer continue at the next stage
         if (phase === PhaseType.Started && !startTimer) {
             setStartTimer(true);
         }
         if (phase === PhaseType.Ended && counter !== 0) {
-            // proceed to next stage: counter is still running
+            // stage scenario 1: success
             if (currIndex === length - 1) {
                 if (errorChar === 0) {
                     setScore((prev) => prev + 1);
@@ -91,10 +96,11 @@ const TypingGame = () => {
                         title: "Success",
                         description: "Moving to the next stage",
                         status: "success",
-                        duration: 1000,
+                        duration: 500,
                         isClosable: true,
                     });
-                } else {
+                } else if (errorChar > 0) {
+                    // stage scenario 2: failure
                     resetTyping();
                     toast({
                         title: "End",
@@ -109,31 +115,45 @@ const TypingGame = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [phase]);
 
+    // possible scenarios when game ends
     useEffect(() => {
         if (counter === 0) {
+            setStartTimer(false);
+            // game scenario 1: update highscore
             if (score > highScore) {
                 sessionStorage.setItem("highScore", score);
                 setHighScore(sessionStorage.getItem("highScore"));
                 setLeaderboardUpdate(true);
             }
             if (currIndex < length - 1) {
-                toast({
-                    title: "Failed",
-                    description: "Time out",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                });
+                // stage scenario 3: warning
+                if (!toast.isActive(gameOverId)) {
+                    console.log("sad");
+                    toast({
+                        gameOverId,
+                        title: "Game over",
+                        description: "Time out",
+                        status: "warning",
+                        duration: 9000,
+                        isClosable: true,
+                    });
+                }
             }
-            // timer will go into negative without this return
+            // game scenario 2: dont update highscore - no actions
             return;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [counter, score]);
+
+    useEffect(() => {
         if (startTimer) {
-            setTimeout(() => {
+            const interval = setInterval(() => {
                 setCounter(counter - 1);
             }, 1000);
+
+            return () => clearInterval(interval);
         }
-    }, [counter, currIndex, highScore, length, score, startTimer]);
+    }, [startTimer, counter]);
 
     return (
         <Flex
