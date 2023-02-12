@@ -83,10 +83,13 @@ const TypingGame = () => {
     useEffect(() => {
         // Because PhaseType.started is only after clicking on the arrows
         // Boolean is required to let the timer continue at the next stage
+        if (counter === 0) {
+            return;
+        }
         if (phase === PhaseType.Started && !startTimer) {
             setStartTimer(true);
         }
-        if (phase === PhaseType.Ended && counter !== 0) {
+        if (phase === PhaseType.Ended) {
             // stage scenario 1: success
             if (currIndex === length - 1) {
                 if (errorChar === 0) {
