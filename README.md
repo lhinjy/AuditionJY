@@ -25,7 +25,9 @@ Each game consist of 3 scenarios:
 -   [ChakraUI](https://chakra-ui.com/getting-started)
 -   [Vercel](https://vercel.com/)
 -   [cypress](https://www.cypress.io/)
+-   [supabase](https://supabase.com/)
 -   [ESlint](https://eslint.org/docs/latest/use/getting-started)
+-   [prettier](https://prettier.io/)
 
 ## Setup
 
@@ -38,4 +40,13 @@ $ npm start
 
 ## Test
 
+### UI Testing with Cypres
+
+-
+
 ## Best practices
+
+## Some learnings
+
+-   Do not, I repeat, do not, put ./cypress into .gitignore :(. It took me a while to figure out why my vercel deployment failed...
+-   Testing for frontend! I have always worked on testing for java (springboot) so testing for frontend is a first :)
