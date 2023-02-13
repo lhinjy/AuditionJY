@@ -16,7 +16,7 @@ import LeaderBoard from "./Leaderboard";
 const { toast } = createStandaloneToast();
 
 const TypingGame = () => {
-    const totalTiming = 10;
+    const totalTiming = 15;
     const characterIncrease = 1;
     const [score, setScore] = useState(0);
     const [typingString, setTypingString] = useState("wasd");

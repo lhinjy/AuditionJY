@@ -12,7 +12,7 @@ describe("<TypingGame />", () => {
             cy.get("[data-cy=character]").click({ multiple: true });
             cy.get("[data-cy=character]").type("w");
             cy.wait(1000);
-            cy.get("[data-cy=counter").should("have.text", "9");
+            cy.get("[data-cy=counter").should("have.text", "14");
         });
 
         it("User passes stage 1", () => {
@@ -27,7 +27,7 @@ describe("<TypingGame />", () => {
         it("User time out", () => {
             cy.get("[data-cy=character]").click({ multiple: true });
             cy.get("[data-cy=character]").type("w");
-            cy.wait(11000);
+            cy.wait(16000);
             cy.get("[data-cy=counter").should("have.text", "0");
             cy.get("[data-cy=score").should("have.text", "0");
         });
@@ -35,7 +35,7 @@ describe("<TypingGame />", () => {
         it("User restart the game", () => {
             cy.get("[data-cy=reset]").should("have.text", "Restart Game");
             cy.get("[data-cy=reset]").click();
-            cy.get("[data-cy=counter]").should("have.text", "10");
+            cy.get("[data-cy=counter]").should("have.text", "15");
             cy.get("[data-cy=score]").should("have.text", "0");
         });
     });

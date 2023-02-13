@@ -16,9 +16,12 @@ Have you played AuditionSEA before? I definitely did as a kid, so here is my att
 
 ### Some common questions
 
-Why is "w","a","s","d" being used?
+-   Why is "w","a","s","d" being used?
 
--   It is the standard movement keys in games!
+    -   It is the standard movement keys in games!
+
+-   Why is it 15 seconds?
+    -   It follows the idea of how doctors will take 15 seconds of your heart beat, and multiply it by 4
 
 ## How it works
 
