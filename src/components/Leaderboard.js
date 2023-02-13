@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-    Text,
-    Input,
-    Button,
-    Table,
-    Thead,
-    Tbody,
     Tr,
     Th,
     Td,
-    TableContainer,
+    Text,
+    Input,
+    Table,
+    Thead,
+    Tbody,
+    Button,
     Modal,
+    ModalBody,
+    ModalHeader,
     ModalOverlay,
     ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
     useDisclosure,
+    TableContainer,
+    ModalCloseButton,
 } from "@chakra-ui/react";
 import { supabase } from "../api/client";
 
@@ -96,7 +96,7 @@ const LeaderBoard = (props) => {
     };
 
     return (
-        <div>
+        <>
             <Text>Leaderboard</Text>
             {props.leaderboardUpdate ? inputHighScore() : null}
             <TableContainer width="20vw">
@@ -106,12 +106,12 @@ const LeaderBoard = (props) => {
                             <Th>HighScore</Th>
                             <Th>Name</Th>
                         </Tr>
-                        {updateLeaderboard()}
+                        <div data-cy="leaderBoard">{updateLeaderboard()}</div>
                     </Thead>
                     <Tbody></Tbody>
                 </Table>
             </TableContainer>
-        </div>
+        </>
     );
 };
 

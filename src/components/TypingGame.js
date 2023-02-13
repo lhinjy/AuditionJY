@@ -26,7 +26,6 @@ const TypingGame = () => {
     const [leaderboardUpdate, setLeaderboardUpdate] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [counter, setCounter] = useState(totalTiming);
-    const gameOverId = "gameOverId";
 
     let {
         states: { chars, charsState, length, currIndex, phase, errorChar },
@@ -130,17 +129,14 @@ const TypingGame = () => {
             }
             if (currIndex < length - 1) {
                 // stage scenario 3: warning
-                if (!toast.isActive(gameOverId)) {
-                    console.log("sad");
-                    toast({
-                        gameOverId,
-                        title: "Game over",
-                        description: "Time out",
-                        status: "warning",
-                        duration: 9000,
-                        isClosable: true,
-                    });
-                }
+                console.log("sad");
+                toast({
+                    title: "Game over",
+                    description: "Time out",
+                    status: "warning",
+                    duration: 9000,
+                    isClosable: true,
+                });
             }
             // game scenario 2: dont update highscore - no actions
             return;

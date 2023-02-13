@@ -8,8 +8,14 @@ describe("<TypingGame />", () => {
             cy.viewport(1080, 900);
             cy.mount(<TypingGame />);
         });
+        it("User starts game", () => {
+            cy.get("[data-cy=character]").click({ multiple: true });
+            cy.get("[data-cy=character]").type("w");
+            cy.wait(1000);
+            cy.get("[data-cy=counter").should("have.text", "9");
+        });
 
-        it("Users pass stage 1", () => {
+        it("User passes stage 1", () => {
             cy.get("[data-cy=character]").click({ multiple: true });
             cy.get("[data-cy=character]").type("w");
             cy.get("[data-cy=character]").type("a");
@@ -18,14 +24,7 @@ describe("<TypingGame />", () => {
             cy.get("[data-cy=score").should("have.text", "1");
         });
 
-        it("Users starts game", () => {
-            cy.get("[data-cy=character]").click({ multiple: true });
-            cy.get("[data-cy=character]").type("w");
-            cy.wait(1000);
-            cy.get("[data-cy=counter").should("have.text", "9");
-        });
-
-        it("Users time out", () => {
+        it("User time out", () => {
             cy.get("[data-cy=character]").click({ multiple: true });
             cy.get("[data-cy=character]").type("w");
             cy.wait(11000);
@@ -33,7 +32,7 @@ describe("<TypingGame />", () => {
             cy.get("[data-cy=score").should("have.text", "0");
         });
 
-        it("Restarts the game", () => {
+        it("User restart the game", () => {
             cy.get("[data-cy=reset]").should("have.text", "Restart Game");
             cy.get("[data-cy=reset]").click();
             cy.get("[data-cy=counter]").should("have.text", "10");

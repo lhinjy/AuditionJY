@@ -5,12 +5,10 @@ describe("<LeaderBoard />", () => {
     const apiUrl = process.env.REACT_APP_API_URL;
     const apiKey = process.env.REACT_APP_API_KEY;
 
-    context("Increase resolution", () => {
+    context("Leaderboard testing", () => {
         beforeEach(() => {
             cy.mount(<LeaderBoard />);
         });
-    });
-    context("GET /scores", () => {
         it("fetch leaderboard score", () => {
             cy.request({
                 method: "GET",
@@ -20,9 +18,8 @@ describe("<LeaderBoard />", () => {
                 expect(response.status).to.eq(200);
                 expect(response.body).length.to.be.greaterThan(1);
             });
+            cy.get("[data-cy=leaderBoard]").should("have.length", 1);
         });
-    });
-    context("POST /scores", () => {
         it("Update leaderboard score", () => {
             cy.request({
                 method: "POST",
