@@ -19,6 +19,11 @@ jobs:
               run: npm ci
             - name: Cypress run
               uses: cypress-io/github-action@v5.0.9
+            - uses: actions/upload-artifact@v3
+              if: failure()
+              with:
+                  name: cypress-screenshots
+                  path: cypress/screenshots
             - name: Install Vercel CLI
               run: npm install --global vercel@latest
             - name: Pull Vercel Environment Information
