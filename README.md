@@ -62,6 +62,12 @@ $ npm install
 $ npm start
 ```
 
+To run the test cases:
+
+```
+ $ cypress open
+```
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file. They can be obtained from Supabase `Project Settings>API`:
