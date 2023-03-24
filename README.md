@@ -2,7 +2,7 @@
 
 Have you played AuditionSEA before? I definitely did as a kid, so here is my attempt at a minimalistic version of my childhood. Try it out [here](https://audition-jy-git-main-lhinjy.vercel.app/)
 
-[Screenshot](/public/_screenshot.png)
+![Screenshot](/public/screenshot.png)
 
 ## How to play
 
