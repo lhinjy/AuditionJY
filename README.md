@@ -2,17 +2,19 @@
 
 Have you played AuditionSEA before? I definitely did as a kid, so here is my attempt at a minimalistic version of my childhood. Try it out [here](https://audition-jy-git-main-lhinjy.vercel.app/)
 
+[Screenshot](\public\Screenshot.PNG)
+
 ## How to play
 
 1. Click on the arrows
 2. Click according to the following mapping:
 
-| Key | Reference                                |
-| --- | ---------------------------------------- |
-| w   | ![arrow-up](.\public\arrow-up.svg)       |
-| a   | ![arrow-left](.\public\arrow-left.svg)   |
-| s   | ![arrow-down](.\public\arrow-down.svg)   |
-| d   | ![arrow-right](.\public\arrow-right.svg) |
+| Key | Reference                               |
+| --- | --------------------------------------- |
+| w   | ![arrow-up](\public\arrow-up.svg)       |
+| a   | ![arrow-left](\public\arrow-left.svg)   |
+| s   | ![arrow-down](\public\arrow-down.svg)   |
+| d   | ![arrow-right](\public\arrow-right.svg) |
 
 ### Some common questions
 
@@ -135,6 +137,7 @@ To run this project, you will need to add the following environment variables to
 
 -   Do not, I repeat, do not, put ./cypress into .gitignore :(. It took me a while to figure out why my vercel deployment failed...
 -   Testing for frontend! I have always worked on testing for java (springboot) so testing for frontend is a first :)
+-   Github action is tough
 
 ## Future improvement
 
