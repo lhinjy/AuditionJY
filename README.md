@@ -2,7 +2,7 @@
 
 Have you played AuditionSEA before? I definitely did as a kid, so here is my attempt at a minimalistic version of my childhood. Try it out [here](https://audition-jy-git-main-lhinjy.vercel.app/)
 
-[Screenshot](\public\Screenshot.PNG)
+[Screenshot](/public/Screenshot.PNG)
 
 ## How to play
 
@@ -11,10 +11,10 @@ Have you played AuditionSEA before? I definitely did as a kid, so here is my att
 
 | Key | Reference                               |
 | --- | --------------------------------------- |
-| w   | ![arrow-up](\public\arrow-up.svg)       |
-| a   | ![arrow-left](\public\arrow-left.svg)   |
-| s   | ![arrow-down](\public\arrow-down.svg)   |
-| d   | ![arrow-right](\public\arrow-right.svg) |
+| w   | ![arrow-up](/public/arrow-up.svg)       |
+| a   | ![arrow-left](/public/arrow-left.svg)   |
+| s   | ![arrow-down](/public/arrow-down.svg)   |
+| d   | ![arrow-right](/public/arrow-right.svg) |
 
 ### Some common questions
 
